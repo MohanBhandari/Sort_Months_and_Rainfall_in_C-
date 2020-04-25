@@ -1,0 +1,155 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+double sumArray(double[], int);
+double averageArray(double[], int);
+double maxArray(double[], int, int &);
+double minArray(double[], int, int &);
+void sortRainfall(double[], int, string[]);
+void printRainfall(double[], int, string[]);
+
+int main()
+{
+   const int MONTHS = 12;   //MONTHS
+   double monthlyRainfall[MONTHS];
+   string monthName[MONTHS] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };  
+  
+   double totalRainfall;
+   double averageRainfall;
+   double highestRainfall;
+   double lowestRainfall;
+   int max = 0;
+   int low = 0;
+
+
+   for (int i = 0; i < MONTHS; i++)
+   {
+       cout << "Enter rainfall in " << monthName[i] << ": ";
+       cin >> monthlyRainfall[i];
+
+       while (monthlyRainfall[i] < 0)
+       {
+           cout << "Rainfall should not be negative." << endl;
+           cout << "Reenter the rainfall in " << monthName[i] << ": ";
+           cin >> monthlyRainfall[i];
+       }
+   }
+
+   totalRainfall = sumArray(monthlyRainfall, MONTHS);
+   averageRainfall = averageArray(monthlyRainfall, MONTHS);
+   highestRainfall = maxArray(monthlyRainfall, MONTHS, max);
+   lowestRainfall = minArray(monthlyRainfall, MONTHS, low);
+
+
+   cout << "Total rainfall: \t\t" << totalRainfall << " inches " << endl;
+   cout << "Average Monthly rainfall: \t\t" << averageRainfall << " inches " << endl;
+   cout << "Higest Rainfall:\t\t" <<monthlyRainfall[max] <<" in "<<monthName[max] <<endl;
+   cout << "Least rainfall in \t\t" << monthlyRainfall[low]<<" in "<<monthName[low] <<endl;
+
+   sortRainfall(monthlyRainfall, MONTHS, monthName);
+   printRainfall(monthlyRainfall, MONTHS, monthName);
+
+   return 0;
+}
+
+double sumArray(double totalRainfall[], int n)
+{
+   double total = 0;
+   for (int i = 0; i < n; i++)
+       total += totalRainfall[i];
+
+   return total;
+}
+
+double averageArray(double totalRainfall[], int n)
+{
+   double average = 0.0;
+   double total = 0;
+
+   for (int i = 0; i < n; i++)
+       total += totalRainfall[i];
+
+   average = total / n;
+
+   return average;
+}
+
+
+double maxArray(double totalRainfall[], int n, int &monthIndex)
+{
+   double high;
+
+   int i = 0;
+   high = totalRainfall[i];
+   while (i < n)
+   {
+       if (totalRainfall[i] > high)
+       {
+           high = totalRainfall[i];
+           monthIndex = i;
+       }
+
+       i++;
+   }
+
+   return high;
+}
+
+double minArray(double totalRainfall[], int n, int &monthIndex)
+{
+   double least;
+
+   int i = 0;
+   least = totalRainfall[i];
+   while (i < n)
+   {
+       if (totalRainfall[i] < least)
+       {
+           least = totalRainfall[i];
+           monthIndex = i;
+       }
+
+       i++;
+   }
+
+   return least;
+}
+
+
+void sortRainfall(double totalRainfall[], int n, string months[])
+{
+   for (int i = 0; i < n ; i++)
+   {
+       int minPos = i;  
+       double minValue = totalRainfall[i];
+       string minMonth = months[i];
+
+       for (int j = i + 1; j < n; j++)
+       {
+           if (totalRainfall[j] < minValue)  
+           {
+               minPos = j;
+               minValue = totalRainfall[j];
+              
+               minMonth = months[j];  
+           }
+       }
+
+       totalRainfall[minPos] = totalRainfall[i];
+       totalRainfall[i] = minValue;
+       months[minPos] = months[i];
+       months[i] = minMonth;
+   }
+}
+
+void printRainfall(double totalRainfall[], int n, string months[])
+{
+    cout << "\nMonth \t Rainfall in inches\n";
+	cout << "-------------------------------";
+    for (int i = 0; i < n; i++)
+	{
+		cout << "\n" << months[i]<< "\t\t";
+		cout << totalRainfall[i];
+	}
+}
